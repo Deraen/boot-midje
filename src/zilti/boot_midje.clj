@@ -18,20 +18,20 @@
       (defn run-tests* [form]
         (eval form)))))
 
-(defn- add-namespaces [baseform namespaces]
+(defn add-namespaces [baseform namespaces]
   `(~@baseform ~@namespaces))
 
-(defn- add-filters [baseform filters]
+(defn add-filters [baseform filters]
   (if (seq filters)
     `(~@baseform :filter ~@filters)
     baseform))
 
-(defn- add-sources [baseform sources]
+(defn add-sources [baseform sources]
   (if (seq sources)
     `(~@baseform :files ~@sources)
     baseform))
 
-(defn- update-fileset [fileset test-path]
+(defn update-fileset [fileset test-path]
   (let [fileset (loop [test-path test-path
                        fileset fileset]
                   (if-not (empty? test-path)

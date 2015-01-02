@@ -2,14 +2,10 @@
   (:use midje.sweet)
   (:require [zilti.boot-midje :as boot-midje]))
 
-(fact "The whole darn thing works"
-      (+ 1 1) => 2)
+(fact "Adding namespaces"
+      (boot-midje/add-namespaces `(midje.repl/load-facts) [:all]) => `(midje.repl/load-facts :all)
+      (boot-midje/add-namespaces `(midje.repl/load-facts) '[a.b c.d]) => `(midje.repl/load-facts a.b c.d))
 
-(fact "Blah"
-      (+ 5 5) => 10)
-
-(fact "Oh darn."
-      (* 5 5) => 25)
-
-(fact "Yeehaa"
-      (+ 2 2) => 4)
+(fact "Adding filters"
+      (boot-midje/add-filters `(midje.repl/load-facts) nil) => `(midje.repl/load-facts)
+      (boot-midje/add-filters `(midje.repl/load-facts) [:aa "bcd"]) => `(midje.repl/load-facts :filter :aa "bcd"))
