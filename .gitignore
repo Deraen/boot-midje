@@ -9,6 +9,7 @@ classes/
 checkouts/
 .generated/
 repl/
+.nrepl-history
 out/
 .boot/
 .pom.xml

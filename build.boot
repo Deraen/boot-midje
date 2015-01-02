@@ -18,8 +18,8 @@
  pom {:project 'zilti/boot-midje
       :version +version+
       :description "Run midje tests in boot."
-      :url "https://bitbucket.com/zilti/boot-midje"
-      :scm {:url "https://bitbucket.com/zilti/boot-midje"}
+      :url "https://github.com/zilti/boot-midje"
+      :scm {:url "https://github.com/zilti/boot-midje"}
       :license {:name "Eclipse Public License"
                 :url "http://www.eclipse.org/legal/epl-v10.html"}}
  midje {:test-path #{"test"}})
