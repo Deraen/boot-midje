@@ -10,7 +10,7 @@
 (require '[adzerk.bootlaces :refer :all]
          '[zilti.boot-midje :refer [midje]])
 
-(def +version+ "0.0.1")
+(def +version+ "0.0.1-SNAPSHOT")
 
 (bootlaces! +version+)
 
