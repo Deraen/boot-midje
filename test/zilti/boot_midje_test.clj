@@ -10,5 +10,5 @@
       (boot-midje/add-filters `(midje.repl/load-facts) nil) => `(midje.repl/load-facts)
       (boot-midje/add-filters `(midje.repl/load-facts) [:aa "bcd"]) => `(midje.repl/load-facts :filter :aa "bcd"))
 
-(fact "Random test"
-      (+ 1 1) => 2)
+(fact "Adding sources"
+      (boot-midje/add-sources `(midje.repl/autotest) ["test" "src"]) => `(midje.repl/autotest :files "test" "src"))

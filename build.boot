@@ -6,12 +6,10 @@
                  [midje "1.6.3" :scope "provided"]
                  [adzerk/bootlaces "0.1.8" :scope "test"]])
 
-;; For bootlace: Set env-vars CLOJARS_USER and CLOJARS_PASS
-
 (require '[adzerk.bootlaces :refer :all]
          '[zilti.boot-midje :refer [midje]])
 
-(def +version+ "0.0.2-SNAPSHOT")
+(def +version+ "0.1.0")
 
 (bootlaces! +version+)
 
@@ -23,4 +21,4 @@
       :scm {:url "https://github.com/zilti/boot-midje"}
       :license {:name "Eclipse Public License"
                 :url "http://www.eclipse.org/legal/epl-v10.html"}}
- midje {:test-path #{"test"}})
+ midje {:test-paths #{"test"}})
