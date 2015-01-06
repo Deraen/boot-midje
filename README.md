@@ -1,6 +1,6 @@
 boot-midje
 ==========
-[![Clojars](https://img.shields.io/badge/clojars-%5Bzilti%2Fboot--typed%20%220.1.0%22%5D-blue.svg?style=flat)](https://clojars.org/zilti/boot-midje)
+[![Clojars](https://img.shields.io/badge/clojars-0.0.1-SNAPSHOT-blue.svg?style=flat)](https://clojars.org/zilti/boot-midje)
 
 `[zilti/boot-midje "0.0.1-SNAPSHOT"]`
 
