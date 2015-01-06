@@ -1,4 +1,4 @@
-[![Clojars](https://img.shields.io/badge/clojars-0.0.1--SNAPSHOT-blue.svg?style=flat)](https://clojars.org/zilti/boot-midje)
+[![Boot](https://img.shields.io/badge/boot-2.0.0-ECC42F.svg?style=flat)](http://boot-clj.com/) [![Clojars](https://img.shields.io/badge/clojars-0.0.1--SNAPSHOT-blue.svg?style=flat)](https://clojars.org/zilti/boot-midje)
 
 boot-midje
 ==========
