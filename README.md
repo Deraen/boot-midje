@@ -1,7 +1,8 @@
 boot-midje
 ==========
+[![Clojars](https://img.shields.io/badge/clojars-%5Bzilti%2Fboot--typed%20%220.1.0%22%5D-blue.svg?style=flat)](https://clojars.org/zilti/boot-midje)
 
-[![Clojars Project](http://clojars.org/zilti/boot-midje/latest-version.svg)](http://clojars.org/zilti/boot-midje)
+`[zilti/boot-midje "0.0.1-SNAPSHOT"]`
 
 A Boot task allowing you to conveniently use Midje with your Boot projects. Currently this is just a rudimentary hack,
 but pretty much everything lein-midje does should work. For autotesting, use "boot watch midje".
