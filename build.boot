@@ -1,3 +1,4 @@
+;; -*- mode: Clojure; -*-
 (set-env!
  :source-paths #{"src"}
  :dependencies '[[org.clojure/clojure "1.6.0" :scope "provided"]
@@ -10,7 +11,7 @@
 (require '[adzerk.bootlaces :refer :all]
          '[zilti.boot-midje :refer [midje]])
 
-(def +version+ "0.0.1-SNAPSHOT")
+(def +version+ "0.0.2-SNAPSHOT")
 
 (bootlaces! +version+)
 

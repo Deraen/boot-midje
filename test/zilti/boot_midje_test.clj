@@ -9,3 +9,6 @@
 (fact "Adding filters"
       (boot-midje/add-filters `(midje.repl/load-facts) nil) => `(midje.repl/load-facts)
       (boot-midje/add-filters `(midje.repl/load-facts) [:aa "bcd"]) => `(midje.repl/load-facts :filter :aa "bcd"))
+
+(fact "Random test"
+      (+ 1 1) => 2)
