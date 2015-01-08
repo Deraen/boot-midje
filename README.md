@@ -1,14 +1,21 @@
 [![License](http://img.shields.io/badge/license-LGPL-blue.svg?style=flat)](https://www.gnu.org/licenses/lgpl-3.0.en.html#content)
-[![Boot](https://img.shields.io/badge/boot-2.0.0-ECC42F.svg?style=flat)](http://boot-clj.com/) [![Clojars](https://img.shields.io/badge/clojars-0.1.0-blue.svg?style=flat)](https://clojars.org/zilti/boot-midje)
+[![Boot](https://img.shields.io/badge/boot-2.0.0-ECC42F.svg?style=flat)](http://boot-clj.com/) [![Clojars](https://img.shields.io/badge/clojars-0.1.1-blue.svg?style=flat)](https://clojars.org/zilti/boot-midje)
 
 boot-midje
 ==========
 
-`[zilti/boot-midje "0.1.0"]`
+`[zilti/boot-midje "0.1.1"]`
 
 A Boot task allowing you to conveniently use Midje with your Boot projects.
 
-- Note that `midje --autotest` needs neither `watch` nor `wait`, since it uses Midje's built-in autotest functionality.
+- Note that `midje --autotest` doesn't need `watch`, since it uses Midje's built-in autotest functionality.
+
+### Example usages
+
+- `boot midje`
+- `boot midje --autotest wait`
+
+### Available options
 
 <pre>
 Options:

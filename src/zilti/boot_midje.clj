@@ -96,8 +96,7 @@
       (when (seq config)
         (midje.util.ecosystem/set-config-files! config))
       (if autotest
-        (do (println "Press \"Ctrl-C\" to terminate.")
-            (do-autotest worker-pods sources filters)
-            @(promise))
+        (do (do-autotest worker-pods sources filters)
+            (core/commit! fileset))
         (do (do-singletest worker-pods namespaces filters level)
             (core/commit! fileset))))))
