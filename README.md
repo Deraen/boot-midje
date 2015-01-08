@@ -8,6 +8,8 @@ boot-midje
 
 A Boot task allowing you to conveniently use Midje with your Boot projects.
 
+- Note that `midje --autotest` needs neither `watch` nor `wait`, since it uses Midje's built-in autotest functionality.
+
 <pre>
 Options:
 -h, --help                  Print this help info.
