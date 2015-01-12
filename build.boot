@@ -19,6 +19,5 @@
       :description "Run midje tests in boot."
       :url "https://github.com/zilti/boot-midje"
       :scm {:url "https://github.com/zilti/boot-midje"}
-      :license {:name "Eclipse Public License"
-                :url "http://www.eclipse.org/legal/epl-v10.html"}}
+      :license {"Eclipse Public License" "http://www.eclipse.org/legal/epl-v10.html"}}
  midje {:test-paths #{"test"}})
