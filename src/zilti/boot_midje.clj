@@ -3,63 +3,34 @@
   (:refer-clojure :exclude [test])
   (:require [boot.core :as core]
             [boot.pod :as pod]
+            [boot.util :as util]
             [boot.task.built-in :as built-in]
             [clojure.set :as set]
-            [clojure.java.io :as io]
-            midje.util.ecosystem
-            midje.config
-            midje.repl))
+            [clojure.java.io :as io]))
 
-(def pod-deps '[])
+(def pod-deps '[[midje "1.6.3"]])
 
-(defn init [fresh-pod]
+(defn init [config fresh-pod]
   (doto fresh-pod
     (pod/with-eval-in
-      (require 'midje.repl)
-      (defn run-tests* [form]
-        (eval form)))))
+      (require 'midje.repl 'midje.util.ecosystem)
+      (alter-var-root #'midje.util.ecosystem/leiningen-paths-var (constantly ~(vec (core/get-env :directories))))
+      (when (seq ~config)
+        (midje.util.ecosystem/set-config-files! ~config)))))
 
-(defn add-namespaces [baseform namespaces]
-  `(~@baseform ~@namespaces))
-
-(defn add-filters [baseform filters]
-  (if (seq filters)
-    `(~@baseform :filter ~@filters)
-    baseform))
-
-(defn add-sources [baseform sources]
-  `(~@baseform :files ~@(if (seq sources) sources (:source-paths (core/get-env)))))
-
-(defn add-verbosity-level [baseform level]
-  (if level
-    `(~@baseform ~level)
-    baseform))
-
-(defn update-fileset [fileset test-path]
-  (let [fileset (loop [test-path test-path
-                       fileset fileset]
-                  (if-not (empty? test-path)
-                    (recur (rest test-path)
-                           (core/add-source fileset (io/file (first test-path))))
-                    fileset))]
-    (core/commit! fileset)
-    
-    (alter-var-root #'midje.util.ecosystem/leiningen-paths-var
-                    (constantly (map str (core/input-dirs fileset))))
-    
-    fileset))
-
-(defn do-singletest [worker-pods namespace filter level]
-  (let [namespace (if (seq namespace) namespace [:all])
-        form (-> `(midje.repl/load-facts) (add-namespaces namespace) (add-filters filter) (add-verbosity-level level))]
-    (println "Running tests...")
+(defn do-singletest [worker-pods namespace filters level]
+  (util/info "Running tests...\n"
     (pod/with-eval-in (worker-pods :refresh)
-      (run-tests* '~form))))
+      (midje.repl/load-facts ~@(cond-> []
+                                 (seq namespace) (concat namespace)
+                                 (seq filters) (concat [:filter filters])
+                                 level (concat [level]))))))
 
-(defn do-autotest [worker-pods dirs filter]
-  (let [form (-> `(midje.repl/autotest) (add-sources dirs) (add-filters filter))]
-    (pod/with-eval-in (worker-pods :refresh)
-      (run-tests* '~form))))
+(defn do-autotest [worker-pods sources filters]
+  (pod/with-eval-in (worker-pods :refresh)
+    (midje.repl/autotest ~@(cond-> (cons :files (seq (if (seq sources) sources (core/get-env :directories))) )
+                             (seq filters) (concat [:filter filters])
+                             ))))
 
 (core/deftask midje
   "Run midje tests in boot."
@@ -73,7 +44,7 @@
    f filters FILTER #{str} "midje filters. Only facts matching one or more of the arguments are loaded. The filter arguments are:
 
                               :keyword      -- Does the metadata have a truthy value for the keyword?
-                              \"string\"      -- Does the fact's name contain the given string? 
+                              \"string\"      -- Does the fact's name contain the given string?
                               #\"regex\"      -- Does any part of the fact's name match the regex?
                               a function    -- Does the function return a truthy value when given the fact's metadata?
 `"
@@ -88,15 +59,11 @@
                               :print-facts       (2) -- print fact descriptions in addition to namespaces.
 
                              "]
-  (let [worker-pods (pod/pod-pool (update-in (core/get-env) [:dependencies] into pod-deps) :init init)]
-    (core/set-env! :source-paths (set/union test-paths (:source-paths (core/get-env)) (:resource-paths (core/get-env))))
+  (let [worker-pods (pod/pod-pool (update-in (core/get-env) [:dependencies] into pod-deps) :init (partial init config))]
     (core/cleanup (worker-pods :shutdown))
     (core/with-pre-wrap fileset
-      (println "Preparing environment...")
-      (when (seq config)
-        (midje.util.ecosystem/set-config-files! config))
+      (util/info "Preparing environment...\n")
       (if autotest
-        (do (do-autotest worker-pods sources filters)
-            (core/commit! fileset))
-        (do (do-singletest worker-pods namespaces filters level)
-            (core/commit! fileset))))))
+        (do-autotest worker-pods sources filters)
+        (do-singletest worker-pods namespaces filters level))
+      fileset)))
