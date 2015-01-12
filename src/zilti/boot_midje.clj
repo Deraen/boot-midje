@@ -20,10 +20,10 @@
 (defn do-singletest [worker-pods namespaces filters level]
   (util/info "Running tests...\n"
     (pod/with-eval-in (worker-pods :refresh)
-      (println namespaces)
       (midje.repl/load-facts
-        ~@(if (seq namespaces) namespaces)
-        ~@(if (seq filters) [:filter filters])
+        ; Double quote each symbol so that when they are unquoted they are still quoted once
+        ~@(if (seq namespaces) (map #(eval `''~%) namespaces))
+        ~@(if (seq filters) (cons :filter filters))
         ~(if level level)))))
 
 (defn do-autotest [worker-pods sources filters]
