@@ -26,12 +26,11 @@
                 (map #(eval `''~%) namespaces)
                 (if level [level])))))
 
-(defn do-autotest [worker-pods namespaces filters]
+(defn do-autotest [worker-pods filters]
   (pod/with-eval-in (worker-pods :refresh)
     (midje.repl/autotest
       ~@(concat [:files] (core/get-env :directories)
-                (map #(eval `''~%) namespaces)
-                (if (or (seq filters))
+                (if (seq filters)
                   (concat [:filter] (map (comp eval read-string) filters)))))))
 
 (core/deftask midje
@@ -45,6 +44,6 @@
     (core/cleanup (worker-pods :shutdown))
     (core/with-pre-wrap fileset
       (if autotest
-        (do-autotest worker-pods namespaces filters)
+        (do-autotest worker-pods filters)
         (do-singletest worker-pods namespaces filters level))
       fileset)))
