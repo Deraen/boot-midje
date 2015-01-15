@@ -22,7 +22,7 @@
   (pod/with-eval-in (worker-pods :refresh)
     (midje.repl/load-facts
       ; Double quote each symbol so that when they are unquoted they are still quoted once
-      ~@(concat (map (comp eval read-string) filters)
+      ~@(concat (map read-string filters)
                 (map #(eval `''~%) namespaces)
                 (if level [level])))))
 
@@ -31,7 +31,7 @@
     (midje.repl/autotest
       ~@(concat [:files] (core/get-env :directories)
                 (if (seq filters)
-                  (concat [:filter] (map (comp eval read-string) filters)))))))
+                  (concat [:filter] (map read-string filters)))))))
 
 (core/deftask midje
   "Run midje tests in boot."
