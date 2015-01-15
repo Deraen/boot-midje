@@ -18,19 +18,21 @@
         (midje.util.ecosystem/set-config-files! ~config)))))
 
 (defn do-singletest [worker-pods namespaces filters level]
-  (util/info "Running tests...\n"
-    (pod/with-eval-in (worker-pods :refresh)
-      (midje.repl/load-facts
-        ; Double quote each symbol so that when they are unquoted they are still quoted once
-        ~@(if (seq namespaces) (map #(eval `''~%) namespaces) [])
-        ~@(if (seq filters)    (map (comp eval read-string) filters) [])
-        ~@(if level            [level] [])))))
+  (util/info "Running tests...\n")
+  (pod/with-eval-in (worker-pods :refresh)
+    (midje.repl/load-facts
+      ; Double quote each symbol so that when they are unquoted they are still quoted once
+      ~@(concat (map (comp eval read-string) filters)
+                (map #(eval `''~%) namespaces)
+                (if level [level])))))
 
-(defn do-autotest [worker-pods filters]
+(defn do-autotest [worker-pods namespaces filters]
   (pod/with-eval-in (worker-pods :refresh)
     (midje.repl/autotest
-      :files ~@(core/get-env :directories)
-      ~@(if (seq filters) [:filter filters] []))))
+      ~@(concat [:files] (core/get-env :directories)
+                (map #(eval `''~%) namespaces)
+                (if (or (seq filters))
+                  (concat [:filter] (map (comp eval read-string) filters)))))))
 
 (core/deftask midje
   "Run midje tests in boot."
@@ -43,6 +45,6 @@
     (core/cleanup (worker-pods :shutdown))
     (core/with-pre-wrap fileset
       (if autotest
-        (do-autotest worker-pods filters)
+        (do-autotest worker-pods namespaces filters)
         (do-singletest worker-pods namespaces filters level))
       fileset)))
