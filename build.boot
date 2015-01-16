@@ -8,12 +8,12 @@
 (require '[adzerk.bootlaces :refer :all]
          '[zilti.boot-midje :refer [midje]])
 
-(def +version+ "0.1.1")
+(def +version+ "0.2.0-SNAPSHOT")
 
 (bootlaces! +version+)
 
 (task-options!
- pom {:project 'zilti/boot-midje
+ pom {:project 'deraen/boot-midje
       :version +version+
       :description "Run midje tests in boot."
       :url "https://github.com/zilti/boot-midje"
