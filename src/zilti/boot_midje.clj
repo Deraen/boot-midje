@@ -40,10 +40,11 @@
    f filters    FILTER    #{str} "midje filters. Only facts matching one or more of the arguments are loaded."
    c config     CONFIG    #{str} "list of midje config files."
    l level      LEVEL     int    "Set Midje's verbosity level."]
-  (let [worker-pods (pod/pod-pool (update-in (core/get-env) [:dependencies] into pod-deps) :init (partial init config))]
+  (let [worker-pods (pod/pod-pool (update-in (core/get-env) [:dependencies] into pod-deps) :init (partial init config))
+        t (delay (do-autotest worker-pods filters))]
     (core/cleanup (worker-pods :shutdown))
     (core/with-pre-wrap fileset
       (if autotest
-        (do-autotest worker-pods filters)
+        @t
         (do-singletest worker-pods namespaces filters level))
       fileset)))
