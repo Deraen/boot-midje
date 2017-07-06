@@ -6,6 +6,8 @@ boot-midje
 
 **Forked from https://bitbucket.org/zilti/boot-midje**
 
+**Not maintained**
+
 `[zilti/boot-midje "0.1.1"]`
 
 A Boot task allowing you to conveniently use Midje with your Boot projects.
