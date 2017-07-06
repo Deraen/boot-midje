@@ -7,7 +7,7 @@
             [clojure.set :as set]
             [clojure.java.io :as io]))
 
-(def pod-deps '[[midje "1.7.0-SNAPSHOT"]])
+(def pod-deps '[[midje "1.9.0-alpha6"]])
 
 (defn init [config fresh-pod]
   (doto fresh-pod
