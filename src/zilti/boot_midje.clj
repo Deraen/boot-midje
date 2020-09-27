@@ -7,11 +7,12 @@
             [clojure.set :as set]
             [clojure.java.io :as io]))
 
-(def pod-deps '[[midje "1.7.0-SNAPSHOT"]])
+(def pod-deps '[[midje "1.9.9"]])
 
 (defn init [config fresh-pod]
   (doto fresh-pod
     (pod/with-eval-in
+      (create-ns 'user)
       (require 'midje.repl 'midje.util.ecosystem)
       (alter-var-root #'midje.util.ecosystem/leiningen-paths-var (constantly ~(vec (core/get-env :directories))))
       (when (seq ~config)
